@@ -1,0 +1,40 @@
+1a2,20
+> 	Modifications performed by Efabless Corporation to use automatic memory
+> 	management. License follows:
+> 
+> 	Copyright (C) 2023 Efabless Corporation
+> 
+> 	Licensed under the Apache License, Version 2.0 (the "License");
+> 	you may not use this file except in compliance with the License.
+> 	You may obtain a copy of the License at
+> 
+> 		http://www.apache.org/licenses/LICENSE-2.0
+> 
+> 	Unless required by applicable law or agreed to in writing, software
+> 	distributed under the License is distributed on an "AS IS" BASIS,
+> 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+> 	See the License for the specific language governing permissions and
+> 	limitations under the License.
+> */
+> 
+> /*
+26a46
+> #include <memory>
+34c54
+< 		std::vector<LibertyAst*> children;
+---
+> 		std::vector<std::shared_ptr<LibertyAst>> children;
+36c56
+< 		LibertyAst *find(std::string name);
+---
+> 		std::shared_ptr<LibertyAst> find(std::string name);
+46c66
+< 		LibertyAst *ast;
+---
+> 		std::shared_ptr<LibertyAst> ast;
+48d67
+< 		~LibertyParser() { if (ast) delete ast; }
+57c76
+<         LibertyAst *parse();
+---
+>         std::shared_ptr<LibertyAst> parse();

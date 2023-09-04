@@ -1,0 +1,21 @@
+/.vscode
+
+# patched
+libparse.h
+libparse.cc
+
+# swig
+libparse.py
+libparse_wrap.c
+libparse_wrap.cxx
+
+# python
+__pycache__
+
+# binaries
+*.out
+*.o
+*.a
+*.dylib
+*.so
+*.dll

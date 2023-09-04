@@ -1,0 +1,39 @@
+library ("sky130_fd_sc_hd__tt_025C_1v80") {
+    define(def_sim_opt,library,string);
+    define(default_arc_mode,library,string);
+    define(default_constraint_arc_mode,library,string);
+    define(driver_model,library,string);
+    define(leakage_sim_opt,library,string);
+    define(min_pulse_width_mode,library,string);
+    define(simulator,library,string);
+    define(switching_power_split_model,library,string);
+    define(sim_opt,timing,string);
+    define(violation_delay_degrade_pct,timing,string);
+    technology("cmos");
+    delay_model : "table_lookup";
+    bus_naming_style : "%s[%d]";
+    time_unit : "1ns";
+    voltage_unit : "1V";
+    leakage_power_unit : "1nW";
+    current_unit : "1mA";
+    pulling_resistance_unit : "1kohm";
+    capacitive_load_unit(1.0000000000, "pf");
+    revision : 1.0000000000;
+    default_cell_leakage_power : 0.0000000000;
+    default_fanout_load : 1.0000000000;
+    default_inout_pin_cap : 0.0000000000;
+    default_input_pin_cap : 0.0000000000;
+    default_max_transition : 1.5000000000;
+    default_output_pin_cap : 0.0000000000;
+    default_arc_mode : "worst_edges";
+    default_constraint_arc_mode : "worst";
+    default_leakage_power_density : 0.0000000000;
+    default_operating_conditions : "tt_025C_1v80";
+    operating_conditions ("tt_025C_1v80") {
+        voltage : 1.8000000000;
+        process : 1.0000000000;
+        temperature : 25.000000000;
+        tree_type : "balanced_tree";
+    }
+    /* Wire load tables */
+}

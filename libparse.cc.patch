@@ -1,0 +1,45 @@
+40,41d39
+< 	for (auto child : children)
+< 		delete child;
+45c43
+< LibertyAst *LibertyAst::find(std::string name)
+---
+> std::shared_ptr<LibertyAst> LibertyAst::find(std::string name)
+185c183
+< LibertyAst *LibertyParser::parse()
+---
+> std::shared_ptr<LibertyAst> LibertyParser::parse()
+225c223
+< 	LibertyAst *ast = new LibertyAst;
+---
+> 	auto ast = std::make_shared<LibertyAst>();
+340c338
+< 				LibertyAst *child = parse();
+---
+> 				auto child = parse();
+409c407
+< LibertyAst *find_non_null(LibertyAst *node, const char *name)
+---
+> std::shared_ptr<LibertyAst> find_non_null(std::shared_ptr<LibertyAst> node, const char *name)
+411c409
+< 	LibertyAst *ret = node->find(name);
+---
+> 	auto ret = node->find(name);
+458c456
+< void event2vl(LibertyAst *ast, std::string &edge, std::string &expr)
+---
+> void event2vl(std::shared_ptr<LibertyAst> ast, std::string &edge, std::string &expr)
+492c490
+< void gen_verilogsim_cell(LibertyAst *ast)
+---
+> void gen_verilogsim_cell(std::shared_ptr<LibertyAst> ast)
+525,526c523,524
+< 		LibertyAst *dir = find_non_null(child, "direction");
+< 		LibertyAst *func = child->find("function");
+---
+> 		auto dir = find_non_null(child, "direction");
+> 		auto func = child->find("function");
+652c650
+< void gen_verilogsim(LibertyAst *ast)
+---
+> void gen_verilogsim(std::shared_ptr<LibertyAst> ast)
