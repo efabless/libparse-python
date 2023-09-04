@@ -6,11 +6,12 @@ libparse.cc
 
 # swig
 libparse.py
-libparse_wrap.c
-libparse_wrap.cxx
+libparse_wrap.*
 
 # python
 __pycache__
+/venv
+*.egg-info
 
 # binaries
 *.out

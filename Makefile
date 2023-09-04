@@ -1,31 +1,42 @@
 
+SRC_DIR = libparse
+SWIG_IN = $(SRC_DIR)/libparse.i
+SWIG_OUT = $(SRC_DIR)/libparse_wrap.cpp $(SRC_DIR)/libparse.py 
+SOURCES = $(SRC_DIR)/libparse_wrap.cpp $(SRC_DIR)/libparse.cpp
+OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
+HEADERS = $(SRC_DIR)/libparse.h $(SRC_DIR)/py_iostream.h
+
 CXXFLAGS += -g -std=c++17 -I$(shell python3 -c "import sysconfig; print(sysconfig.get_path('include'))")
 
 
 all: _libparse.so
+swig_out: $(SWIG_OUT)
 
-_libparse.so: libparse.cc libparse_wrap.cxx libparse.h py_iostream.h
-	$(CXX) -fPIC -c $(CXXFLAGS) -DFILTERLIB libparse.cc 
-	$(CXX) -fPIC -c $(CXXFLAGS) -DFILTERLIB libparse_wrap.cxx 
-	$(CXX) -shared libparse.o libparse_wrap.o -o $@
+_libparse.so: $(OBJECTS)
+	$(CXX) -shared $^ -o $@
 
-libparse.py libparse_wrap.cxx: libparse.i libparse.h
-	swig -c++ -python $<
+$(OBJECTS): %.o : %.cpp $(HEADERS)
+	$(CXX) -fPIC -o $@ -c $(CXXFLAGS) -DFILTERLIB $<
 
-libparse.h: yosys/passes/techmap/libparse.h libparse.h.patch
+$(SWIG_OUT): $(SWIG_IN) $(HEADERS)
+	swig -c++ -o $(SRC_DIR)/libparse_wrap.cpp -oh $(SRC_DIR)/libparse.h -python $<
+
+$(SRC_DIR)/libparse.h: yosys/passes/techmap/libparse.h $(SRC_DIR)/libparse.h.patch
 	cp $< $@
-	patch libparse.h libparse.h.patch
+	patch $@ $(SRC_DIR)/libparse.h.patch
 
-libparse.cc: yosys/passes/techmap/libparse.cc
+$(SRC_DIR)/libparse.cpp: yosys/passes/techmap/libparse.cc $(SRC_DIR)/libparse.cpp.patch
 	cp $< $@
-	patch libparse.cc libparse.cc.patch
+	patch $@ $(SRC_DIR)/libparse.cpp.patch
 
 .PHONY: regen-patches
 regen-patches:
-	diff yosys/passes/techmap/libparse.h libparse.h > libparse.h.patch || true
-	diff yosys/passes/techmap/libparse.cc libparse.cc > libparse.cc.patch || true
+	diff yosys/passes/techmap/libparse.h $(SRC_DIR)/libparse.h > $(SRC_DIR)/libparse.h.patch || true
+	diff yosys/passes/techmap/libparse.cc $(SRC_DIR)/libparse.cpp > $(SRC_DIR)/libparse.cpp.patch || true
 
 .PHONY: clean
 clean:
-	rm -f libparse*.cc libparse*.cxx libparse.h libparse.py
+	rm -f $(SRC_DIR)/*.cpp $(SRC_DIR)/*.o $(SRC_DIR)/libparse.py $(SRC_DIR)/libparse.h  
 	rm -f *.so *.o *.dylib *.dll
+	rm -rf build/
+	rm -rf libparse.egg-info/

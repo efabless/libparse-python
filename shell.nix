@@ -6,5 +6,6 @@ with pkgs; mkShell {
         swig
         clang
         python3Full
+        valgrind
     ];
 }
