@@ -29,7 +29,7 @@ class build_py(_build_py):
 setup(
     name=module_name,
     packages=["libparse"],
-    version="0.1.5",
+    version="0.2.0",
     description="Python wrapper around Yosys' libparse module",
     long_description=open("Readme.md").read(),
     long_description_content_type="text/markdown",

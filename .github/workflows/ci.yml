@@ -1,0 +1,70 @@
+name: CI
+
+# Events that trigger workflow
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+
+jobs:
+  build_wheels:
+    name: Build Wheels ( ${{matrix.os}} )
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, windows-2019, macos-11]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          recursive: True
+      - uses: actions/setup-python@v3
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel==2.15.0
+      - name: Build wheels
+        run: python -m cibuildwheel --archs x86_64,aarch64 --output-dir dist
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ./dist/*.whl
+  push_to_pypi:
+    name: Build (and publish, if applicable)
+    runs-on: ubuntu-20.04
+    needs: build_wheels
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          recursive: True
+      - name: Export Repo URL
+        run: echo "REPO_URL=https://github.com/${{ github.repository }}" >> $GITHUB_ENV
+      - name: Export Branch Name
+        run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.6"
+      - name: Build Distribution
+        run: |
+          python3 ./build.py sdist
+      - uses: actions/download-artifact@v3
+        with:
+          path: ./dist/*.whl
+      - name: Set default for env.NEW_TAG
+        run: echo "NEW_TAG=NO_NEW_TAG" >> $GITHUB_ENV
+      - name: Check for new version
+        if: ${{ env.BRANCH_NAME == 'main' }}
+        run: |
+          cd ${GITHUB_WORKSPACE}/ && python3 .github/scripts/generate_tag.py
+      - name: Tag Commit
+        if: ${{ env.NEW_TAG != 'NO_NEW_TAG' }}
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          tag: "${{ env.NEW_TAG }}"
+          repo-token: "${{ secrets.MY_TOKEN }}"
+      - name: Publish
+        if: ${{ env.NEW_TAG != 'NO_NEW_TAG' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}

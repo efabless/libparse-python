@@ -7,5 +7,6 @@ with pkgs; mkShell {
         clang
         python3Full
         valgrind
+        twine
     ];
 }
