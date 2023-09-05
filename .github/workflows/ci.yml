@@ -9,11 +9,24 @@ on:
 
 jobs:
   build_wheels:
-    name: Build Wheels ( ${{matrix.os}} )
-    runs-on: ${{ matrix.os }}
+    name: Build Wheels (${{matrix.os.name}})
+    runs-on: ${{ matrix.os.runner }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macos-11]
+        os:
+          [
+            {
+              name: "Ubuntu 20.04",
+              runner: "ubuntu-20.04",
+              archs: "x86_64,aarch64",
+            },
+            { name: "macOS 11", runner: "macos-11", archs: "x86_64,arm64" },
+            {
+              name: "Windows Server 2019",
+              runner: "windows-2019",
+              archs: "AMD64,ARM64",
+            },
+          ]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -23,7 +36,7 @@ jobs:
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.15.0
       - name: Build wheels
-        run: python -m cibuildwheel --archs x86_64,aarch64 --output-dir dist
+        run: python -m cibuildwheel --archs ${{ matrix.os.archs }} --output-dir dist
       - uses: actions/upload-artifact@v3
         with:
           path: ./dist/*.whl
