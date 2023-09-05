@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 import os
+import platform
 import subprocess
-from setuptools import setup, find_packages, Extension
+from setuptools import setup, Extension
 from setuptools.command.build_py import build_py as _build_py
 
 module_name = "libparse"
 __dir__ = os.path.dirname(os.path.abspath(__file__))
+
+compiler_opts = ["-std=c++11", "-DFILTERLIB"]
+if platform.system() == "Windows":
+    compiler_opts = ["/DFILTERLIB"]
 
 ext = Extension(
     name="_libparse",
@@ -17,7 +22,7 @@ ext = Extension(
     include_dirs=[
         "libparse",
     ],
-    extra_compile_args=["-std=c++11", "-DFILTERLIB"],
+    extra_compile_args=compiler_opts,
 )
 
 class build_py(_build_py):
