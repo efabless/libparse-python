@@ -24,7 +24,7 @@ ext = Extension(
 setup(
     name=module_name,
     packages=find_packages(),
-    version="0.1.1",
+    version="0.1.2",
     description="Python wrapper around Yosys' libparse module",
     long_description=open("Readme.md").read(),
     long_description_content_type="text/markdown",
