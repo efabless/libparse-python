@@ -30,8 +30,8 @@ class build_py(_build_py):
 
 setup(
     name=module_name,
-    packages=find_packages(),
-    version="0.1.3",
+    packages=["libparse"],
+    version="0.1.4",
     description="Python wrapper around Yosys' libparse module",
     long_description=open("Readme.md").read(),
     long_description_content_type="text/markdown",
@@ -48,4 +48,5 @@ setup(
     python_requires=">3.6",
     ext_modules=[ext],
     build_py=build_py,
+    package_data = {'': ['libparse.py']}  # needed for sdist
 )
