@@ -6,7 +6,7 @@ SOURCES = $(SRC_DIR)/libparse_wrap.cpp $(SRC_DIR)/libparse.cpp
 OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 HEADERS = $(SRC_DIR)/libparse.h $(SRC_DIR)/py_iostream.h
 
-CXXFLAGS += -g -std=c++17 -I$(shell python3 -c "import sysconfig; print(sysconfig.get_path('include'))")
+CXXFLAGS += -g -std=c++11 -I$(shell python3 -c "import sysconfig; print(sysconfig.get_path('include'))")
 
 
 all: _libparse.so
