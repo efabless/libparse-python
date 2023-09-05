@@ -18,13 +18,13 @@ ext = Extension(
     include_dirs=[
         "libparse",
     ],
-    extra_compile_args=["-std=c++17", "-DFILTERLIB"],
+    extra_compile_args=["-std=c++11", "-DFILTERLIB"],
 )
 
 setup(
     name=module_name,
     packages=find_packages(),
-    version="0.1.0",
+    version="0.1.1",
     description="Python wrapper around Yosys' libparse module",
     long_description=open("Readme.md").read(),
     long_description_content_type="text/markdown",
