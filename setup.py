@@ -2,35 +2,24 @@
 import os
 import subprocess
 from setuptools import setup, find_packages, Extension
-from setuptools.command.build_py import build_py
 
 module_name = "libparse"
-__dir__ = os.path.dirname(__file__)
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+
+subprocess.check_call(["make", "patch"], cwd=__dir__)
 
 ext = Extension(
-    name='_libparse',
-    swig_opts=['-c++'],
+    name="_libparse",
+    swig_opts=["-c++"],
     sources=[
-        'libparse/libparse.cpp',
-        'libparse/libparse.i',
+        "libparse/libparse.cpp",
+        "libparse/libparse.i",
     ],
     include_dirs=[
-        'libparse',
+        "libparse",
     ],
-    extra_compile_args=[
-        '-std=c++17',
-        "-DFILTERLIB"
-    ]
+    extra_compile_args=["-std=c++17", "-DFILTERLIB"],
 )
-
-class BuildPy(build_py):
-    def run(self):
-        subprocess.check_call([
-            "make",
-            "swig_out"
-        ])
-        self.run_command('build_ext')
-        super(build_py, self).run()
 
 setup(
     name=module_name,
@@ -41,7 +30,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Efabless Corporation and Contributors",
     author_email="donn@efabless.com",
-    install_requires=[],
+    install_requires=["wheel"],
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python :: 3",
@@ -51,7 +40,4 @@ setup(
     ],
     python_requires=">3.6",
     ext_modules=[ext],
-    cmdclass={
-        'build_py': BuildPy,
-    },
 )

@@ -1,3 +1,4 @@
+#define Py_LIMITED_API 0x030600F0
 #include "Python.h"
 #include <cstdio>
 #include <iostream>

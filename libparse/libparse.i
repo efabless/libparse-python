@@ -6,6 +6,7 @@
 
 %{
 #define SWIG_FILE_WITH_INIT
+#define Py_LIMITED_API 0x030600F0
 #include <iostream>
 #include <memory>
 #include "libparse.h"

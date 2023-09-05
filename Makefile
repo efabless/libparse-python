@@ -10,6 +10,7 @@ CXXFLAGS += -g -std=c++17 -I$(shell python3 -c "import sysconfig; print(sysconfi
 
 
 all: _libparse.so
+patch: $(SRC_DIR)/libparse.cpp $(SRC_DIR)/libparse.h
 swig_out: $(SWIG_OUT)
 
 _libparse.so: $(OBJECTS)
@@ -40,3 +41,4 @@ clean:
 	rm -f *.so *.o *.dylib *.dll
 	rm -rf build/
 	rm -rf libparse.egg-info/
+	rm -rf dist/

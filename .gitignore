@@ -2,7 +2,7 @@
 
 # patched
 libparse.h
-libparse.cc
+libparse.cpp
 
 # swig
 libparse.py
@@ -11,6 +11,7 @@ libparse_wrap.*
 # python
 __pycache__
 /venv
+/dist
 *.egg-info
 
 # binaries
