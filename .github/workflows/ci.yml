@@ -63,7 +63,7 @@ jobs:
           python-version: "3.6"
       - name: Build Distribution
         run: |
-          python3 ./build.py sdist
+          python3 ./setup.py sdist
       - uses: actions/download-artifact@v3
         with:
           path: ./dist/*.whl
