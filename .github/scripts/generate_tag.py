@@ -14,26 +14,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import os
+import subprocess
 import sys
 
 from gh import gh
 
-sys.path.insert(0, os.getcwd())
-
-import volare  # noqa: E402
+version = subprocess.check_output(
+    [sys.executable, os.path.join("libparse", "__version__.py")],
+    encoding="utf8",
+)
 
 print("Getting tags…")
 
 latest_tag = None
 latest_tag_commit = None
-tags = [pair[1] for pair in gh.volare.tags]
+tags = [pair[1] for pair in gh.libparse.tags]
 
-tag_exists = volare.__version__ in tags
+tag_exists = version in tags
 
 if tag_exists:
     print("Tag already exists. Leaving NEW_TAG unaltered.")
 else:
-    new_tag = volare.__version__
+    new_tag = version
 
     print("Found new tag %s." % new_tag)
     gh.export_env("NEW_TAG", new_tag)

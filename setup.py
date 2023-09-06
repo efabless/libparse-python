@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import sys
 import platform
 import subprocess
 from setuptools import setup, Extension
@@ -7,6 +8,18 @@ from setuptools.command.build_py import build_py as _build_py
 
 module_name = "libparse"
 __dir__ = os.path.dirname(os.path.abspath(__file__))
+
+version = subprocess.check_output(
+    [
+        sys.executable,
+        os.path.join(
+            os.path.abspath(__dir__),
+            module_name,
+            "__version__.py",
+        ),
+    ],
+    encoding="utf8",
+)
 
 compiler_opts = ["-std=c++11", "-DFILTERLIB"]
 if platform.system() == "Windows":
@@ -25,16 +38,18 @@ ext = Extension(
     extra_compile_args=compiler_opts,
 )
 
+
 class build_py(_build_py):
     def run(self) -> None:
         subprocess.check_call(["make", "patch"], cwd=__dir__)
         self.run_command("build_ext")
         return super().run()
-    
+
+
 setup(
     name=module_name,
     packages=["libparse"],
-    version="0.2.0",
+    version=version,
     description="Python wrapper around Yosys' libparse module",
     long_description=open("Readme.md").read(),
     long_description_content_type="text/markdown",
@@ -51,6 +66,6 @@ setup(
     python_requires=">3.6",
     ext_modules=[ext],
     cmdclass={
-        'build_py': build_py,
+        "build_py": build_py,
     },
 )
