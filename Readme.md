@@ -4,9 +4,17 @@ A SWIG-based Python wrapper around [Yosys](https://github.com/yosyshq/yosys)'s
 `libparse`, for all your lib file parsing needs.
 
 # Requirements
-* Python 3.6+
+## Running
+* UNIX or UNIX-like operating system (Windows untested)
+* Python 3.6+ (CPython or PyPy) with PIP
+    * `python3 -m pip install wheel`
+
+## Building
+Running requirements +
+
 * A C++11 compiler
 * GNU Make
+* SWIG
 
 # License
 Apache 2.0. Check 'License'.
