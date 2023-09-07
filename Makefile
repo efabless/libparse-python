@@ -6,20 +6,25 @@ SOURCES = $(SRC_DIR)/libparse_wrap.cpp $(SRC_DIR)/py_iostream.cpp $(SRC_DIR)/lib
 OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 HEADERS = $(SRC_DIR)/libparse.h $(SRC_DIR)/py_iostream.h $(SRC_DIR)/stdio_filebuf.h
 
-CXX = clang++
+CXXFLAGS += -g -std=c++11 -I$(shell python3 -c "import sysconfig; print(sysconfig.get_path('include'))")
+LDFLAGS += -g -L$(shell python3 -c "import sysconfig; print(sysconfig.get_path('stdlib'))")
+EXT = .so
 
-CXXFLAGS += -stdlib=libc++ -g -std=c++11 -I$(shell python3 -c "import sysconfig; print(sysconfig.get_path('include'))")
+ifeq ("$(shell uname)", "Darwin")
+LDFLAGS += -dynamic -undefined dynamic_lookup
+else
+LDFLAGS += -shared
+endif
 
-
-all: _libparse.so
+all: _libparse$(EXT)
 patch: $(SRC_DIR)/libparse.cpp $(SRC_DIR)/libparse.h
 swig_out: $(SWIG_OUT)
 
-_libparse.so: $(OBJECTS)
-	$(CXX) -shared $^ -o $@
+_libparse$(EXT): $(OBJECTS)
+	$(CXX) $(LDFLAGS)  $^ -o $@ 
 
 $(OBJECTS): %.o : %.cpp $(HEADERS)
-	$(CXX) -fPIC -o $@ -c $(CXXFLAGS) -DFILTERLIB $<
+	$(CXX) $(CXXFLAGS) -fPIC -o $@ -c -DFILTERLIB $<
 
 $(SWIG_OUT): $(SWIG_IN) $(HEADERS)
 	swig -c++ -o $(SRC_DIR)/libparse_wrap.cpp -oh $(SRC_DIR)/libparse.h -python $<

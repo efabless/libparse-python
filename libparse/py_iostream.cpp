@@ -1,12 +1,12 @@
 #include "py_iostream.h"
 
-buffer_pair from_pyobject(PyObject *pyfile)
+PyIStream *PyIStream::make_from(PyObject *pyfile)
 {
     if (pyfile == Py_None) {
         throw std::runtime_error("None is not a valid input stream");
     }
     auto fileno = PyObject_GetAttrString(pyfile, "fileno");
-    if (fileno == Py_None) {
+    if (!fileno) { // NOT NONE!! NULL!!
         throw std::runtime_error("Passed object has no fileno() method");
     }
 
@@ -20,5 +20,5 @@ buffer_pair from_pyobject(PyObject *pyfile)
         throw std::runtime_error("Failed to open input stream");
     }
 
-    return buffer_pair(new stdio_filebuf<char>(f), f);
+    return new PyIStream(new stdio_filebuf<char>(f));
 }

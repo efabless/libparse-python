@@ -4,10 +4,12 @@
 with pkgs; mkShell {
     buildInputs = [
         swig
-        clang_16
-        clang-tools_16
+        clang_14
+        clang-tools_14
         python3Full
-        valgrind
         twine
     ];
+
+    CC = "clang";
+    CXX = "clang++";
 }

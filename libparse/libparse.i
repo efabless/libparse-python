@@ -21,9 +21,10 @@
 
 %typemap(in) std::istream& {
     try {
-        $1 = new PyIStream($input);
+        $1 = PyIStream::make_from($input);
     } catch (std::runtime_error &e) {
-        PyErr_SetString(PyExc_TypeError, e.what());
+        std::cerr << e.what() << std::endl;
+        SWIG_exception(SWIG_TypeError, e.what());
     }
 }
 

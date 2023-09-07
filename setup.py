@@ -30,6 +30,7 @@ ext = Extension(
     swig_opts=["-c++"],
     sources=[
         "libparse/libparse.cpp",
+        "libparse/py_iostream.cpp",
         "libparse/libparse.i",
     ],
     include_dirs=[
