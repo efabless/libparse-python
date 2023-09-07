@@ -10,6 +10,8 @@ with pkgs; mkShell {
         twine
     ];
 
-    CC = "clang";
-    CXX = "clang++";
+    shellHook = ''
+    export CC=${clang_14}/bin/clang
+    export CXX=${clang_14}/bin/clang++
+    '';
 }

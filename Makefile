@@ -6,7 +6,7 @@ SOURCES = $(SRC_DIR)/libparse_wrap.cpp $(SRC_DIR)/py_iostream.cpp $(SRC_DIR)/lib
 OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 HEADERS = $(SRC_DIR)/libparse.h $(SRC_DIR)/py_iostream.h $(SRC_DIR)/stdio_filebuf.h
 
-CXXFLAGS += -g -std=c++11 -I$(shell python3 -c "import sysconfig; print(sysconfig.get_path('include'))")
+CXXFLAGS += -Wpedantic -g -std=c++11 -I$(shell python3 -c "import sysconfig; print(sysconfig.get_path('include'))")
 LDFLAGS += -g -L$(shell python3 -c "import sysconfig; print(sysconfig.get_path('stdlib'))")
 EXT = .so
 

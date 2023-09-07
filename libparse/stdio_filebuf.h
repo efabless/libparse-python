@@ -71,7 +71,7 @@ template <class _CharT> void stdio_filebuf<_CharT>::imbue(const std::locale &__l
     __encoding_ = __cv_->encoding();
     __always_noconv_ = __cv_->always_noconv();
     if (__encoding_ > __limit)
-        std::__throw_runtime_error("unsupported locale for standard io");
+        throw std::runtime_error("unsupported locale for standard io");
 }
 template <class _CharT> typename stdio_filebuf<_CharT>::int_type stdio_filebuf<_CharT>::underflow() { return __getchar(false); }
 template <class _CharT> typename stdio_filebuf<_CharT>::int_type stdio_filebuf<_CharT>::uflow() { return __getchar(true); }
