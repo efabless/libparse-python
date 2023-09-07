@@ -51,7 +51,7 @@ setup(
     packages=["libparse"],
     version=version,
     description="Python wrapper around Yosys' libparse module",
-    long_description=open("Readme.md").read(),
+    long_description=open(os.path.join(__dir__, "Readme.md")).read(),
     long_description_content_type="text/markdown",
     author="Efabless Corporation and Contributors",
     author_email="donn@efabless.com",
