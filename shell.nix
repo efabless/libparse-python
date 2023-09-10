@@ -3,7 +3,7 @@
 }:
 with pkgs; mkShell {
     buildInputs = [
-        swig
+        swig4
         clang_14
         clang-tools_14
         python3Full

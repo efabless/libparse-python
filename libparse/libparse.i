@@ -1,5 +1,5 @@
 /* File: libparse.i */
-%module libparse
+%module(package="libparse", moduleimport="import _libparse") libparse
 %include <std_string.i>
 %include <std_vectora.i>
 %include <std_shared_ptr.i>
