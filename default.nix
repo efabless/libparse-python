@@ -35,4 +35,11 @@ buildPythonPackage rec {
     clang
     swig4
   ];
+  
+  meta = with lib; {
+    description = "Python wrapper around Yosys's libparse";
+    license = with licenses; [asl20];
+    homepage = "https://github.com/efabless/libpaprse-python";
+    platforms = platforms.linux ++ platforms.darwin;
+  };
 }

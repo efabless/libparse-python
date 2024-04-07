@@ -41,7 +41,8 @@
       callPythonPackage = pkgs.lib.callPackageWith (pkgs // pkgs.python3.pkgs // self.packages.${pkgs.system});
     in
       rec {
-        default = callPythonPackage ./default.nix {};
+        libparse = callPythonPackage ./default.nix {};
+        default = libparse;
       }
     );
   };
