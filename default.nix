@@ -22,6 +22,7 @@ buildPythonPackage rec {
   version = builtins.head version_list;
   
   prePatch = ''
+    rm -rf ./yosys
     cp -r ${yosys} ./yosys
   '';
 
